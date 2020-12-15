@@ -6,7 +6,7 @@ from django.utils.html import format_html_join
 class AttachmentsAdminMixin:
 
     # label, slug, content_type
-    # relation_name specifies the name cooresponding with the genericRelation
+    # relation_name specifies the name corresponding with the genericRelation
     relation_name = 'attachments'
     
     def __init__(self, *args, **kwargs):
@@ -18,24 +18,13 @@ class AttachmentsAdminMixin:
 
     def list_attachments(self, instance):
         return format_html_join(
-            '\n', "<a href={}{}>{}</a><br>",
+            '', "<a href={}{}>{}</a><br>",
             ((settings.BASE_URL, att.get_absolute_url(), att.file_name) for att in instance.attachments.all())
         )
 
     def get_readonly_fields(self, request, obj=None):
         return super().get_readonly_fields(request, obj=obj) + ('list_attachments',)
 
-class AttachmentsAdminFormMixin:
-
-    # label, slug, content_type
-    # relation_name specifies the name cooresponding with the genericRelation
-    relation_name = 'attachments'
-    
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['list_attachments'] = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'readonly': True}))
-        
 
 
 
